@@ -12,11 +12,12 @@
   "host_permissions": [],
   "content_scripts": [
     {
-      "matches": [
-        "https://www.nytimes.com/games/wordle/index.html"
-      ],
+      "matches": ["https://www.nytimes.com/games/wordle/index.html"],
       "js": ["whatdoesitmean.js"]
     }
   ],
-  "icons": { "512": "help.png"}
+  "background": {
+    "service_workers": ["background.js"]
+  },
+  "icons": { "512": "help.png" }
 }
