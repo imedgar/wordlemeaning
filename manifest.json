@@ -1,6 +1,6 @@
 {
   "name": "What does that wordle mean",
-  "version": "1.0.0",
+  "version": "0.1",
   "description": "Search what the wordle of the day means",
   "manifest_version": 3,
   "author": "edgar rubio",
@@ -17,5 +17,6 @@
       ],
       "js": ["whatdoesitmean.js"]
     }
-  ]
+  ],
+  "icons": { "512": "help.png"}
 }

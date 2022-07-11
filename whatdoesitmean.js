@@ -1,17 +1,18 @@
 const CONFIG = {
-	wordleUrl: "www.nytimes.com/games/wordle",
 	dictionaryUrl: "https://www.dictionary.com/browse/",
 	divClass: "Toast-module_toast"
 }
 
-function checkIsSolved() {
+checkIsRevealed();	
+
+function checkIsRevealed() {
 	let isRevealed = document.querySelectorAll(`*[class^="${CONFIG.divClass}"]`);
 	if (isRevealed.length !== 0) {
 		console.log('revealed!');
 		whatDoesItMean(isRevealed[0].innerText);
 	} else {
 		console.log('not solved yet');
-		setTimeout(checkIsSolved, 5000);
+		setTimeout(checkIsRevealed, 3000);
 	}
 }
 
@@ -24,13 +25,4 @@ function whatDoesItMean(word) {
 
 function openNewTab(url) {
 	window.open(url, '_blank').focus();
-}
-
-function checkIsWordleUrl() {
-    console.log('checking url..');
-	return document.URL.includes(CONFIG.wordleUrl);
-}
-
-if (checkIsWordleUrl()) {
-	checkIsSolved();	
 }
