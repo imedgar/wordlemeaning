@@ -1,0 +1,21 @@
+{
+  "name": "What does that wordle mean",
+  "version": "1.0.0",
+  "description": "Search what the wordle of the day means",
+  "manifest_version": 3,
+  "author": "edgar rubio",
+  "action": {
+    "default_popup": "index.html",
+    "default_title": "What does that wordle mean"
+  },
+  "permissions": [],
+  "host_permissions": [],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.nytimes.com/games/wordle/index.html"
+      ],
+      "js": ["whatdoesitmean.js"]
+    }
+  ]
+}
