@@ -5,29 +5,12 @@ const CONFIG = {
   resolvedClass: "Tile-module_tile",
 };
 
-const values = {
-  genius: "genius",
-  magnificent: "magnificent",
-  impressive: "impressive",
-  splendid: "splendid",
-  great: "great",
-  phew: "phew",
-};
-
 let word = [];
+let revealed = false;
 
-execute();
-
-function execute() {
-  checkIsResolved();
-  checkIsRevealed();
-}
+checkIsResolved();
 
 function checkIsResolved() {
-  if (checkIsDone()) {
-    return;
-  }
-
   let guesses = document.querySelectorAll(
     `*[class^="${CONFIG.resolvedClass}"]`
   );
@@ -35,7 +18,6 @@ function checkIsResolved() {
 
   for (let i = 0; i < guesses.length; i++) {
     if (counter === 5) {
-      console.log("resolved!");
       whatDoesItMean(word.join(""));
       return;
     }
@@ -45,24 +27,25 @@ function checkIsResolved() {
     } else {
       counter = 0;
       word = [];
+      checkIsRevealed();
     }
+  }
+  if (checkIsDone()) {
+    return;
   }
   setTimeout(checkIsResolved, 5000);
 }
 
 function checkIsRevealed() {
-  if (checkIsDone()) {
+  if (revealed) {
     return;
   }
-
   let isRevealed = document.querySelectorAll(
     `*[class^="${CONFIG.revealedClass}"]`
   );
   if (isRevealed.length !== 0) {
-    console.log("revealed!");
+    revealed = true;
     whatDoesItMean(isRevealed[0].innerText);
-  } else {
-    setTimeout(checkIsRevealed, 3000);
   }
 }
 
@@ -74,11 +57,13 @@ function checkIsDone() {
 }
 
 function whatDoesItMean(word) {
-  console.log(`the word is ${word}, will open a new tab in 3 sec.`);
-  setTimeout(openNewTab, 3000, CONFIG.dictionaryUrl.concat(word));
-}
-
-function openNewTab(url) {
-  window.open(url, "_blank").focus();
-  //chrome.runtime.sendMessage({"message": "open_new_tab", "url": url});
+  chrome.runtime.sendMessage(
+    {
+      url: CONFIG.dictionaryUrl.concat(word).toLowerCase(),
+      type: "open_url",
+    },
+    function (response) {
+      console.log(response.message);
+    }
+  );
 }

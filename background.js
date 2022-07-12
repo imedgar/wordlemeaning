@@ -1,5 +1,12 @@
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  if (request.message === "open_new_tab") {
-    chrome.tabs.create({ url: request.url });
+  if (request?.type === "open_url") {
+    openTab(request.url);
+    sendResponse({ message: `tab created: ${request.url}` });
   }
 });
+
+function openTab(url) {
+  chrome.tabs.create({
+    url: url,
+  });
+}

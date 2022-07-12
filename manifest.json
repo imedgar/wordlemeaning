@@ -8,16 +8,16 @@
     "default_popup": "index.html",
     "default_title": "What does that wordle mean"
   },
-  "permissions": [],
-  "host_permissions": [],
+  "permissions": ["tabs"],
   "content_scripts": [
     {
       "matches": ["https://www.nytimes.com/games/wordle/index.html"],
-      "js": ["whatdoesitmean.js"]
+      "js": ["content.js"]
     }
   ],
   "background": {
-    "service_workers": ["background.js"]
+    "service_worker": "background.js",
+    "type": "module"
   },
   "icons": { "512": "help.png" }
 }
