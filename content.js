@@ -1,59 +1,77 @@
 const CONFIG = {
   dictionaryUrl: "https://www.dictionary.com/browse/",
+};
+const DOM = {
   revealedClass: "Toast-module_toast",
   statsClass: "Stats-module_gameStats",
   resolvedClass: "Tile-module_tile",
 };
 
-let word = [];
-let revealed = false;
+const STATE = {
+  tbd: "tbd",
+  correct: "correct",
+  empty: "empty",
+};
+
+const dontCheck = [STATE.tbd, STATE.empty];
+
+let attemptedWord = [];
+let whichTry = 0;
 
 checkIsResolved();
 
 function checkIsResolved() {
-  let guesses = document.querySelectorAll(
-    `*[class^="${CONFIG.resolvedClass}"]`
-  );
-  let counter = 0;
+  let letters = document.querySelectorAll(`*[class^="${DOM.resolvedClass}"]`);
 
-  for (let i = 0; i < guesses.length; i++) {
-    if (counter === 5) {
-      whatDoesItMean(word.join(""));
+  for (let i = 0; i < letters.length; i++) {
+    let letterState = letters[i].attributes["data-state"].nodeValue;
+
+    // dont check if it is not sent yet
+    if (dontCheck.includes(letterState)) {
+      attemptedWord = [];
+      setTimeout(checkIsResolved, 3000);
       return;
     }
-    if (guesses[i].attributes["data-state"].nodeValue === "correct") {
-      counter++;
-      word.push(guesses[i].innerText);
+
+    if (letterState === STATE.correct) {
+      attemptedWord.push(letters[i].innerText);
+      // solved
+      if (attemptedWord.length === 5) {
+        console.log("solved!! " + attemptedWord.join(""));
+        whatDoesItMean(attemptedWord.join(""));
+        return;
+      }
+      // it's a new try (new row...)
+      if ((i + 1) % 5 === 0) {
+        attemptedWord = [];
+      }
     } else {
-      counter = 0;
-      word = [];
-      checkIsRevealed();
+      attemptedWord = [];
     }
   }
-  if (checkIsDone()) {
-    return;
+  // TODO: should not get in here anymore since checking tbd and empties...
+  if (!checkWordleComplete()) {
+    console.log("not solved yet... should not be executed (?)");
+    setTimeout(checkIsResolved, 5000);
   }
-  setTimeout(checkIsResolved, 5000);
+  checkIsRevealed();
 }
 
 function checkIsRevealed() {
-  if (revealed) {
-    return;
-  }
   let isRevealed = document.querySelectorAll(
-    `*[class^="${CONFIG.revealedClass}"]`
+    `*[class^="${DOM.revealedClass}"]`
   );
-  if (isRevealed.length !== 0) {
-    revealed = true;
+
+  if (isRevealed.length > 0) {
+    isLose = true;
     whatDoesItMean(isRevealed[0].innerText);
   }
 }
 
-function checkIsDone() {
-  let isRevealed = document.querySelectorAll(
-    `*[class^="${CONFIG.statsClass}"]`
-  );
-  return isRevealed.length !== 0;
+function checkWordleComplete() {
+  let isComplete = document.querySelectorAll(`*[class^="${DOM.statsClass}"]`);
+
+  return isComplete.length > 0;
 }
 
 function whatDoesItMean(word) {
@@ -62,8 +80,6 @@ function whatDoesItMean(word) {
       url: CONFIG.dictionaryUrl.concat(word).toLowerCase(),
       type: "open_url",
     },
-    function (response) {
-      console.log(response.message);
-    }
+    () => {}
   );
 }
