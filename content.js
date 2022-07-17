@@ -49,12 +49,10 @@ function checkIsResolved() {
       attemptedWord = [];
     }
   }
-  // TODO: should not get in here anymore since checking tbd and empties...
-  if (!checkWordleComplete()) {
-    console.log("not solved yet... should not be executed (?)");
+
+  if (!checkIsRevealed() && !checkWordleComplete()) {
     setTimeout(checkIsResolved, 5000);
-  }
-  checkIsRevealed();
+  }  
 }
 
 function checkIsRevealed() {
@@ -63,9 +61,10 @@ function checkIsRevealed() {
   );
 
   if (isRevealed.length > 0) {
-    isLose = true;
     whatDoesItMean(isRevealed[0].innerText);
+    return true;
   }
+  return false;
 }
 
 function checkWordleComplete() {
