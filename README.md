@@ -1,27 +1,30 @@
-## What is that wordle?
+## What Does That Wordle Mean?
 
-The idea came to me (as a non native english speaker, very often) playing wordle with my GF, once you have or have not solved the word, you don't have any clue what that word means. 
-Honestly I was pretty surprised this is still not a feature of the game itself. 
+As a non-native English speaker, I often found myself playing Wordle with my girlfriend and wondering: *What does this word actually mean?* Once you've finished the game—whether you won or lost—there’s no built-in way to see the definition of the Wordle word of the day.
 
-So , this simple chrome extension will look up for the WORDLE of the day once the game is finished (won't matter if it's a win or lose)
-Works only for [NYTimes Wordle](https://www.nytimes.com/games/wordle/index.html)
+Honestly, I was surprised this isn’t already a feature in the game itself!
+
+This simple Chrome extension solves that problem by automatically looking up the Wordle word of the day as soon as the game is finished.
+
+> **Note:** This extension works only for [NYTimes Wordle](https://www.nytimes.com/games/wordle/index.html).
 
 ### Features
 
-* Looks up for the word of the day once the game is finished.
-* Will open a new tab with the word meaning e.g: [Wedge](https://www.dictionary.com/browse/wedge)
+- Automatically looks up the Wordle word of the day after the game ends.
+- Opens a new tab with the word’s definition, for example: [Wedge](https://www.dictionary.com/browse/wedge).
 
 ### Screenshot
 
-![](https://github.com/imedgar/whatisthatwordle/blob/master/assets/whatsthatwordle_screenshot.png)
-
+![Extension Screenshot](https://github.com/imedgar/whatisthatwordle/blob/master/assets/whatsthatwordle_screenshot.png)
 
 ### Installation
 
-Navigate to [chrome://extensions/](chrome://extensions/) and click the "Load 
-unpacked extension..." button. Navigate to and select this directory. You 
-should then see an "What does that wordle mean
-" extension and it will work automatically every time you open [NYTimes Wordle](https://www.nytimes.com/games/wordle/index.html)
+1. Navigate to [chrome://extensions/](chrome://extensions/).
+2. Click the **Load unpacked extension...** button.
+3. Select this directory.
+4. The extension, *What Does That Wordle Mean?*, should now be active and will work automatically when you play [NYTimes Wordle](https://www.nytimes.com/games/wordle/index.html).
 
-### Author 
-[edgar g. rubio](https://github.com/imedgar)
+### Author
+
+[Edgar G. Rubio](https://github.com/imedgar)
+
