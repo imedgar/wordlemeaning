@@ -31,6 +31,21 @@
         text-align: center;
       }
 
+      /* Button Style for Light Mode */
+      button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        font-size: 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+
       /* Dark Mode */
       @media (prefers-color-scheme: dark) {
         body {
@@ -47,6 +62,21 @@
         }
         a {
           color: #90caf9;
+        }
+
+        /* Button Style for Dark Mode */
+        button {
+          background-color: #375a7f;
+          color: white;
+          border: none;
+          padding: 5px 10px;
+          font-size: 1rem;
+          border-radius: 4px;
+          cursor: pointer;
+        }
+
+        button:hover {
+          background-color: #1c3d5a;
         }
       }
     </style>
@@ -65,6 +95,21 @@
       <p>
         This extension will look it up for you <strong>right after the game is finished</strong>.
       </p>
+      <hr>
+      <div class="radio-group">
+        <p>Select your preferred dictionary</p>
+        <label>
+          <input type="radio" name="dictionary" value="dictionary.com" id="dict-com"> Dictionary.com
+        </label>
+        <br>
+        <label>
+          <input type="radio" name="dictionary" value="merriam-webster" id="merriam-webster"> Merriam-Webster
+        </label>
+        <br>
+        <label>
+          <input type="radio" name="dictionary" value="oxford" id="oxford"> Oxford
+        </label>
+      </div>
     </div>
     <div class="footer">
       <p>
@@ -77,5 +122,7 @@
       </p>
     </div>
   </body>
+  <script src="settings.js"></script>
+
 </html>
 

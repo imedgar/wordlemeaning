@@ -1,6 +1,6 @@
-## What Does That Wordle Mean?
+## Wordle Meaning
 
-As a non-native English speaker, I often found myself playing Wordle with my girlfriend and wondering: *What does this word actually mean?* Once you've finished the game—whether you won or lost—there’s no built-in way to see the definition of the Wordle word of the day.
+As a non-native English speaker, I often find myself playing Wordle with my partner and wondering: What does this word mean? Once you've finished the game—whether you won or lost—there’s no built-in way to see the meaning of the Wordle word of the day.
 
 Honestly, I was surprised this isn’t already a feature in the game itself!
 
@@ -26,5 +26,4 @@ This simple Chrome extension solves that problem by automatically looking up the
 
 ### Author
 
-[Edgar G. Rubio](https://github.com/imedgar)
-
+[imedgar](https://github.com/imedgar)

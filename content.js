@@ -10,25 +10,21 @@ const DOM = {
 
 const STATE = {
   tbd: "tbd",
+  present: "present",
   correct: "correct",
   empty: "empty",
+  absent: "absent",
 };
 
-const dontCheck = [STATE.tbd, STATE.empty];
+const dontCheck = [STATE.tbd, STATE.empty, STATE.present, STATE.absent];
 
 let attemptedWord = "";
-let lastWord = "";
 
 function pollWordle() {
   const currentWord = getCurrentResolvedWord();
-
-  if (currentWord && currentWord !== lastWord) {
-    lastWord = currentWord;
-    if (currentWord.length === 5) {
-      console.log("Solved: " + currentWord);
-      openDictionary(currentWord);
-      return;
-    }
+  if (currentWord?.length === 5) {
+    openDictionary(currentWord);
+    return;
   }
 
   if (isRevealed()) {
@@ -36,7 +32,6 @@ function pollWordle() {
   }
 
   if (isWordleComplete()) {
-    console.log("Wordle is complete.");
     return;
   }
 
@@ -50,30 +45,35 @@ function getCurrentResolvedWord() {
   let word = "";
   for (let i = 0; i < letters.length; i++) {
     const letterEl = letters[i];
-    const letterState = letterEl.getAttribute("data-state");
+    const letterState = letters[i].getAttribute("data-state");
 
+    // not correct clears the word 
     if (dontCheck.includes(letterState)) {
-      return "";
+      word = "";
+      continue;
     }
 
-    if (letterState === STATE.correct) {
-      word += letterEl.innerText;
-    } else {
-      return "";
+    word += letterEl.innerText;
+    // if 5 correct in a row, it is solved
+    if (word.length === 5) {
+      break;
     }
-
-    if ((i + 1) % 5 === 0 && word.length === 5) {
-      return word;
+    // avoid counting 5 with different rows
+    if ((i + 1) % 5 === 0) {
+      word = "";
     }
   }
-  return "";
+  return word;
 }
 
 function isRevealed() {
   const revealedElements = document.querySelectorAll(`*[class^="${DOM.revealedClass}"]`);
   if (revealedElements.length > 0) {
-    console.log("Reveal overlay active: " + revealedElements[0].innerText);
-    openDictionary(revealedElements[0].innerText);
+    const revealed = revealedElements[0].innerText;
+    if (revealed === "Not in word list") {
+      return false;
+    }
+    openDictionary(revealed);
     return true;
   }
   return false;
@@ -90,9 +90,7 @@ function openDictionary(word) {
       url: CONFIG.dictionaryUrl.concat(word).toLowerCase(),
       type: "open_url",
     },
-    () => {
-      console.log("Dictionary lookup triggered for:", word);
-    }
+    () => { }
   );
 }
 
