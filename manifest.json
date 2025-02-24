@@ -1,6 +1,6 @@
 {
   "name": "Wordle Meaning",
-  "version": "0.1",
+  "version": "1.0.0",
   "description": "Search Wordle of the day meaning",
   "manifest_version": 3,
   "author": "github.com/imedgar",
@@ -26,6 +26,9 @@
     "service_worker": "background.js"
   },
   "icons": {
-    "512": "assets/help.png"
+    "16": "assets/logo_16.png",
+    "32": "assets/logo_32.png",
+    "48": "assets/logo_48.png",
+    "128": "assets/logo_128.png"
   }
 }
