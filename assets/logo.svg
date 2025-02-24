@@ -1,0 +1,28 @@
+<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Outer rounded border -->
+  
+  <!-- Grid lines -->
+ 
+  <!-- Grid cells -->
+  <g stroke="black" stroke-width="3">
+    <!-- Row 1 -->
+    <rect x="5" y="5" width="30" height="30" fill="white"/>
+    <rect x="35" y="5" width="30" height="30" fill="white"/>
+    <rect x="65" y="5" width="30" height="30" fill="white"/>
+    
+    <!-- Row 2 -->
+    <rect x="5" y="35" width="30" height="30" fill="white"/>
+    <rect x="35" y="35" width="30" height="30" fill="gold"/> <!-- Yellow square -->
+    <rect x="65" y="35" width="30" height="30" fill="green"/> <!-- Green square with M -->
+    
+    <!-- Row 3 -->
+    <rect x="5" y="65" width="30" height="30" fill="green"/> <!-- Green square -->
+    <rect x="35" y="65" width="30" height="30" fill="green"/> <!-- Green square with W -->
+    <rect x="65" y="65" width="30" height="30" fill="green"/> <!-- Green square -->
+  </g>
+  
+  <!-- Letters -->
+  <text x="20" y="55" font-size="20" font-family="Arial" font-weight="bold" text-anchor="middle" fill="black">W</text>
+  <text x="80" y="55" font-size="20" font-family="Arial" font-weight="bold" text-anchor="middle" fill="white">M</text>
+</svg>
+

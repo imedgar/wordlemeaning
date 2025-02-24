@@ -1,6 +1,11 @@
-const CONFIG = {
-  dictionaryUrl: "https://www.dictionary.com/browse/",
+const CONFIG = { dictionaryUrl: "https://www.dictionary.com/browse/", };
+
+const DICT = {
+  dictionary: (word) => `https://www.dictionary.com/browse/${word}`,
+  oxford: (word) => `https://www.oed.com/search/dictionary/?scope=Entries&q=${word}`,
+  merriam: (word) => `https://www.merriam-webster.com/dictionary/${word}`,
 };
+
 const DOM = {
   revealedClass: "Toast-module_toast",
   statsClass: "Stats-module_gameStats",
@@ -9,76 +14,99 @@ const DOM = {
 
 const STATE = {
   tbd: "tbd",
+  present: "present",
   correct: "correct",
   empty: "empty",
+  absent: "absent",
 };
 
-const dontCheck = [STATE.tbd, STATE.empty];
+const DONT_REVEAL = [
+  "Not in word list",
+  "Not enough letters",
+]
 
-let attemptedWord = [];
-let whichTry = 0;
+const dontCheck = [STATE.tbd, STATE.empty, STATE.present, STATE.absent];
 
-checkIsResolved();
+let attemptedWord = "";
 
-function checkIsResolved() {
-  let letters = document.querySelectorAll(`*[class^="${DOM.resolvedClass}"]`);
-
-  for (let i = 0; i < letters.length; i++) {
-    let letterState = letters[i].attributes["data-state"].nodeValue;
-
-    // dont check if it is not sent yet
-    if (dontCheck.includes(letterState)) {
-      attemptedWord = [];
-      setTimeout(checkIsResolved, 3000);
-      return;
-    }
-
-    if (letterState === STATE.correct) {
-      attemptedWord.push(letters[i].innerText);
-      // solved
-      if (attemptedWord.length === 5) {
-        console.log("solved!! " + attemptedWord.join(""));
-        whatDoesItMean(attemptedWord.join(""));
-        return;
-      }
-      // it's a new try (new row...)
-      if ((i + 1) % 5 === 0) {
-        attemptedWord = [];
-      }
-    } else {
-      attemptedWord = [];
-    }
+function pollWordle() {
+  const currentWord = getCurrentResolvedWord();
+  if (currentWord?.length === 5) {
+    openDictionary(currentWord);
+    return;
   }
 
-  if (!checkIsRevealed() && !checkWordleComplete()) {
-    setTimeout(checkIsResolved, 5000);
-  }  
+  if (isRevealed()) {
+    return;
+  }
+
+  if (isWordleComplete()) {
+    return;
+  }
+
+  requestAnimationFrame(pollWordle);
 }
 
-function checkIsRevealed() {
-  let isRevealed = document.querySelectorAll(
-    `*[class^="${DOM.revealedClass}"]`
-  );
+function getCurrentResolvedWord() {
+  const letters = document.querySelectorAll(`*[class^="${DOM.resolvedClass}"]`);
+  if (!letters || letters.length === 0) return "";
 
-  if (isRevealed.length > 0) {
-    whatDoesItMean(isRevealed[0].innerText);
+  let word = "";
+  for (let i = 0; i < letters.length; i++) {
+    const letterEl = letters[i];
+    const letterState = letters[i].getAttribute("data-state");
+
+    // not correct clears the word 
+    if (dontCheck.includes(letterState)) {
+      word = "";
+      continue;
+    }
+
+    word += letterEl.innerText;
+    // if 5 correct in a row, it is solved
+    if (word.length === 5) {
+      break;
+    }
+    // avoid counting 5 with different rows
+    if ((i + 1) % 5 === 0) {
+      word = "";
+    }
+  }
+  return word;
+}
+
+function isRevealed() {
+  const revealedElements = document.querySelectorAll(`*[class^="${DOM.revealedClass}"]`);
+  if (revealedElements.length > 0) {
+    const revealed = revealedElements[0].innerText;
+    if (DONT_REVEAL.includes(revealed)) {
+      return false;
+    }
+    openDictionary(revealed);
     return true;
   }
   return false;
 }
 
-function checkWordleComplete() {
-  let isComplete = document.querySelectorAll(`*[class^="${DOM.statsClass}"]`);
-
-  return isComplete.length > 0;
+function isWordleComplete() {
+  const completeElements = document.querySelectorAll(`*[class^="${DOM.statsClass}"]`);
+  return completeElements.length > 0;
 }
 
-function whatDoesItMean(word) {
-  chrome.runtime.sendMessage(
-    {
-      url: CONFIG.dictionaryUrl.concat(word).toLowerCase(),
-      type: "open_url",
-    },
-    () => {}
-  );
+function openDictionary(word) {
+  setTimeout(async () => {
+    chrome.storage.sync.get('dictionary', (data) => {
+      console.log(JSON.stringify(data))
+      chrome.runtime.sendMessage(
+        {
+          url: DICT[data?.dictionary || 'dictionary']?.(word.toLowerCase()),
+          type: "open_url",
+        },
+        () => { }
+      );
+    });
+  }, 1500);
 }
+
+pollWordle();
+

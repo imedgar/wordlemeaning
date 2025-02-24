@@ -1,23 +1,34 @@
 {
-  "name": "What does that wordle mean",
-  "version": "0.1",
-  "description": "Search what the wordle of the day means",
+  "name": "Wordle Meaning",
+  "version": "1.0.0",
+  "description": "Search Wordle of the day meaning",
   "manifest_version": 3,
-  "author": "edgar rubio",
+  "author": "github.com/imedgar",
   "action": {
     "default_popup": "index.html",
-    "default_title": "What does that wordle mean"
+    "default_title": "Wordle Meaning"
   },
-  "permissions": ["tabs"],
+  "permissions": [
+    "tabs",
+    "storage"
+  ],
   "content_scripts": [
     {
-      "matches": ["https://www.nytimes.com/games/wordle/index.html"],
-      "js": ["content.js"]
+      "matches": [
+        "https://www.nytimes.com/games/wordle/index.html"
+      ],
+      "js": [
+        "content.js"
+      ]
     }
   ],
   "background": {
-    "service_worker": "background.js",
-    "type": "module"
+    "service_worker": "background.js"
   },
-  "icons": { "512": "help.png" }
+  "icons": {
+    "16": "assets/logo_16.png",
+    "32": "assets/logo_32.png",
+    "48": "assets/logo_48.png",
+    "128": "assets/logo_128.png"
+  }
 }
