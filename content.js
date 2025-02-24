@@ -1,5 +1,9 @@
-const CONFIG = {
-  dictionaryUrl: "https://www.dictionary.com/browse/",
+const CONFIG = { dictionaryUrl: "https://www.dictionary.com/browse/", };
+
+const DICT = {
+  dictionary: (word) => `https://www.dictionary.com/browse/${word}`,
+  oxford: (word) => `https://www.oed.com/search/dictionary/?scope=Entries&q=${word}`,
+  merriam: (word) => `https://www.merriam-webster.com/dictionary/${word}`,
 };
 
 const DOM = {
@@ -15,6 +19,11 @@ const STATE = {
   empty: "empty",
   absent: "absent",
 };
+
+const DONT_REVEAL = [
+  "Not in word list",
+  "Not enough letters",
+]
 
 const dontCheck = [STATE.tbd, STATE.empty, STATE.present, STATE.absent];
 
@@ -70,7 +79,7 @@ function isRevealed() {
   const revealedElements = document.querySelectorAll(`*[class^="${DOM.revealedClass}"]`);
   if (revealedElements.length > 0) {
     const revealed = revealedElements[0].innerText;
-    if (revealed === "Not in word list") {
+    if (DONT_REVEAL.includes(revealed)) {
       return false;
     }
     openDictionary(revealed);
@@ -85,13 +94,18 @@ function isWordleComplete() {
 }
 
 function openDictionary(word) {
-  chrome.runtime.sendMessage(
-    {
-      url: CONFIG.dictionaryUrl.concat(word).toLowerCase(),
-      type: "open_url",
-    },
-    () => { }
-  );
+  setTimeout(async () => {
+    chrome.storage.sync.get('dictionary', (data) => {
+      console.log(JSON.stringify(data))
+      chrome.runtime.sendMessage(
+        {
+          url: DICT[data?.dictionary || 'dictionary']?.(word.toLowerCase()),
+          type: "open_url",
+        },
+        () => { }
+      );
+    });
+  }, 1500);
 }
 
 pollWordle();
