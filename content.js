@@ -35,8 +35,9 @@ function pollWordle() {
     openDictionary(currentWord);
     return;
   }
-
-  if (isRevealed()) {
+  const revealed = isRevealed();
+  if (revealed) {
+    openDictionary(revealed);
     return;
   }
 
@@ -82,8 +83,7 @@ function isRevealed() {
     if (DONT_REVEAL.includes(revealed)) {
       return false;
     }
-    openDictionary(revealed);
-    return true;
+    return revealed;
   }
   return false;
 }
