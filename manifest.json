@@ -9,7 +9,6 @@
     "default_title": "Wordle Meaning"
   },
   "permissions": [
-    "tabs",
     "storage"
   ],
   "content_scripts": [
