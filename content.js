@@ -96,7 +96,6 @@ function isWordleComplete() {
 function openDictionary(word) {
   setTimeout(async () => {
     chrome.storage.sync.get('dictionary', (data) => {
-      console.log(JSON.stringify(data))
       chrome.runtime.sendMessage(
         {
           url: DICT[data?.dictionary || 'dictionary']?.(word.toLowerCase()),
